@@ -1,5 +1,5 @@
 import React from 'react';
-import Wave from '../../assets/Wave';
+import Wave from '../../assets/Wave.png';
 
 const styles = {
   html: {
@@ -21,8 +21,10 @@ const styles = {
   waveContainer: {
     position: 'absolute',
     top: '-198px',
-    width: '6400px',
+    width: '6400px', // Largura suficiente para repetir a imagem
     height: '198px',
+    backgroundImage: `url(${Wave})`, // Certifique-se de que o caminho está correto
+    backgroundRepeat: 'repeat-x', // Repetição horizontal
     animation: 'wave 7s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite',
     transform: 'translate3d(0, 0, 0)',
   },
@@ -65,10 +67,8 @@ const WaveLine = () => {
       </style>
       <div style={styles.ocean}>
         <div style={styles.waveContainer}>
-          <Wave />
         </div>
         <div style={{ ...styles.waveContainer, ...styles.wave2 }}>
-          <Wave />
         </div>
       </div>
     </>

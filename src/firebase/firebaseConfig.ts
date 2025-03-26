@@ -4,7 +4,7 @@ import "firebase/auth";
 import "firebase/firestore";
 import "firebase/functions";
 import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { collection, getFirestore } from "firebase/firestore";
 import { getFunctions } from "firebase/functions";
 
 //importar os dados do firebase a partir do .env
@@ -25,3 +25,5 @@ export const app = initializeApp(firebaseConfig);
 export const auth = getAuth();
 export const firestore = getFirestore();
 export const functions = getFunctions();
+export const connections = collection(firestore, "connections");
+

@@ -1,41 +1,56 @@
 import React, { useState, useEffect } from 'react';
+import { Container, Typography, List, ListItem, ListItemText } from '@mui/material';
 import { firestore } from '../firebase/firebaseConfig';
-import { Container, List, ListItem, ListItemText, MenuItem, Select, Typography } from '@mui/material';
+import { collection, getDocs } from 'firebase/firestore';
+import Header from '../components/Header';
+
+interface ScheduledMessage {
+  id: string;
+  message: string;
+  scheduleTime: string;
+  status: string;
+}
 
 const ManageMessages: React.FC = () => {
-  const [messages, setMessages] = useState<{ id: string; message: string; status: string }[]>([]);
-  const [filter, setFilter] = useState('all');
+  const [messages, setMessages] = useState<ScheduledMessage[]>([]);
 
   useEffect(() => {
-    const unsubscribe = firestore.collection('messages').onSnapshot((snapshot) => {
-      const messagesData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as { id: string; message: string; status: string }));
-      setMessages(messagesData);
-    });
-    return unsubscribe;
+    const fetchMessages = async () => {
+      try {
+        const snapshot = await getDocs(collection(firestore, 'scheduledMessages'));
+        const messagesData = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as ScheduledMessage[];
+        setMessages(messagesData);
+        console.log('Mensagens:', messagesData);
+      } catch (error) {
+        console.error('Erro ao buscar mensagens agendadas:', error);
+      }
+    };
+
+    fetchMessages();
   }, []);
 
-  const filteredMessages = messages.filter((message) => filter === 'all' || message.status === filter);
-
   return (
+    <>
+       <Header />
     <Container className="mt-10">
       <Typography variant="h4" className="text-center">
-        Manage Messages Page
+        Status das Mensagens
       </Typography>
-      <div className="flex justify-center mt-4">
-        <Select value={filter} onChange={(e) => setFilter(e.target.value as string)} className="w-80">
-          <MenuItem value="all">All</MenuItem>
-          <MenuItem value="sent">Sent</MenuItem>
-          <MenuItem value="scheduled">Scheduled</MenuItem>
-        </Select>
-      </div>
       <List className="mt-4 w-80 mx-auto">
-        {filteredMessages.map((message) => (
+        {messages.map((message) => (
           <ListItem key={message.id}>
-            <ListItemText primary={`${message.message} - ${message.status}`} />
+            <ListItemText
+              primary={`Mensagem: ${message.message}`}
+              secondary={`Status: ${message.status} | Envio: ${message.scheduleTime}`}
+              />
           </ListItem>
         ))}
       </List>
     </Container>
+        </>
   );
 };
 

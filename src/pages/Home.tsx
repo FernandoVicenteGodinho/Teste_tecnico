@@ -12,11 +12,12 @@ const Home: React.FC = () => {
         <ul>
           <li className='mb-8'>
             <p className='text-white brightness-50 text-lg italic'>Projeto no github</p>
-            <a className='text-5xl font-bold text-white mt-2' href=""><h2 className='mt-2'>Acout</h2></a>
+            <a className='text-5xl font-bold text-white mt-2' target="_blank"
+              href="https://github.com/FernandoVicenteGodinho/Teste_tecnico"><h2 className='mt-2'>Github</h2></a>
           </li>
           <li className='mb-8'>
             <p className='text-white brightness-50 text-lg italic'>Meus contatos</p>
-            <a className='text-5xl font-bold text-white' href=""><h2 className='mt-2'>Contact</h2></a>
+            <a className='text-5xl font-bold text-white' target="_blank" href="https://www.linkedin.com/in/fernando-vicente-godinho-76a018143/"><h2 className='mt-2'>Contact</h2></a>
           </li>
           <li className='mb-8'>
             <p className='text-white brightness-50 text-lg italic'>Entre com seu e-mail e senha</p>

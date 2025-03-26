@@ -2,21 +2,24 @@ import React, { FormEvent, useState } from 'react';
 import { auth } from '../firebase/firebaseConfig';
 import { Button, Container, TextField, Typography } from '@mui/material';
 import {  signInWithEmailAndPassword } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  console.log('Email:', email);
+  const navigate = useNavigate();
+  const { setUser, user } = useAuth();
+
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
     try {
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-          // Signed up
           const user = userCredential.user;
-          console.log('User:', user);
-          // ...
+          // setUser(user);
+          navigate('/dashboard')
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -31,7 +34,7 @@ const Login = () => {
   return (
       <Container className="mt-10 gap-5">
         <Typography variant="h4" className="text-center">
-          Login Page
+          Faça o login
         </Typography>
         <form onSubmit={handleLogin} className="flex flex-col items-center mt-4 gap-5">
           <TextField
@@ -60,7 +63,7 @@ const Login = () => {
         variant="text"
         color="secondary"
         className="w-80 mt-8"
-        onClick={() => console.log('Redirect to register')}
+        onClick={() => navigate('/register')}
       >
         Register
       </Button>

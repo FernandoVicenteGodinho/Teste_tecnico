@@ -46,7 +46,7 @@ const Register: React.FC = () => {
   return (
     <Container className="mt-10 gap-5">
       <Typography variant="h4" className="text-center">
-        Register Page
+        Crie sua conta
       </Typography>
       <form onSubmit={handleRegister} className="flex flex-col items-center mt-4 gap-5">
         <TextField

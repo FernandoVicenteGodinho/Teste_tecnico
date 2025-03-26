@@ -1,55 +1,96 @@
 import React, { useState, useEffect } from 'react';
+import { Container, TextField, Button, Typography, List, ListItem, ListItemText, IconButton } from '@mui/material';
 import { firestore } from '../firebase/firebaseConfig';
-import { Button, Container, List, ListItem, ListItemText, TextField, Typography } from '@mui/material';
+import { addDoc, collection, deleteDoc, doc, onSnapshot } from 'firebase/firestore';
+import { useParams } from 'react-router-dom'; // Importar o hook useParams
+import Header from '../components/Header';
+
+interface Contact {
+  id: string;
+  name: string;
+  phone: string;
+}
 
 const Contacts: React.FC = () => {
-  const [contacts, setContacts] = useState<{ name: string; phone: string }[]>([]);
+  const [contacts, setContacts] = useState<Contact[]>([]);
   const [newContact, setNewContact] = useState({ name: '', phone: '' });
+  const { id: connectionId } = useParams<{ id: string }>(); // Extrair o connectionId da URL
 
   useEffect(() => {
-    const unsubscribe = firestore.collection('contacts').onSnapshot((snapshot) => {
-      const contactsData = snapshot.docs.map((doc) => doc.data() as { name: string; phone: string });
-      setContacts(contactsData);
-    });
-    return unsubscribe;
-  }, []);
+    if (!connectionId) {
+      console.error('connectionId is null');
+      return () => {};
+    }
+
+    // Observar os contatos da conexão no Firestore
+    const unsubscribe = onSnapshot(
+      collection(doc(firestore, 'connections', connectionId), 'contacts'),
+      (snapshot) => {
+        const contactsData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as Contact));
+        setContacts(contactsData);
+      }
+    );
+
+    return unsubscribe; // Cancelar a inscrição ao desmontar o componente
+  }, [connectionId]);
 
   const handleAddContact = async () => {
+    if (!connectionId) {
+      console.error('connectionId is null');
+      return;
+    }
     if (newContact.name.trim() && newContact.phone.trim()) {
-      await firestore.collection('contacts').add(newContact);
+      await addDoc(collection(doc(firestore, 'connections', connectionId), 'contacts'), newContact);
       setNewContact({ name: '', phone: '' });
     }
   };
 
+  const handleDeleteContact = async (contactId: string) => {
+    if (!connectionId) {
+      console.error('connectionId is null');
+      return;
+    }
+    await deleteDoc(doc(collection(doc(firestore, 'connections', connectionId), 'contacts'), contactId));
+  };
+
   return (
     <Container className="mt-10">
+             <Header />
+
       <Typography variant="h4" className="text-center">
-        Contacts Page
+        Gerenciar Contatos
       </Typography>
-      <div className="flex flex-col items-center mt-4">
+      <div className="flex flex-col items-center mt-4 gap-5">
         <TextField
-          label="Name"
+          label="Nome do Contato"
           value={newContact.name}
           onChange={(e) => setNewContact({ ...newContact, name: e.target.value })}
           className="mb-4 w-80"
         />
         <TextField
-          label="Phone"
+          label="Telefone"
+          type='tel'
           value={newContact.phone}
           onChange={(e) => setNewContact({ ...newContact, phone: e.target.value })}
           className="mb-4 w-80"
         />
         <Button variant="contained" color="primary" onClick={handleAddContact} className="w-80">
-          Add Contact
+          Adicionar Contato
         </Button>
       </div>
-      <List className="mt-4 w-80 mx-auto">
-        {contacts.map((contact, index) => (
-          <ListItem key={index}>
+      <div className="flex flex-col items-center mt-4 gap-5">
+
+      <List className="mt-4 w-auto mx-auto">
+        {contacts.map((contact) => (
+          <ListItem key={contact.id}>
             <ListItemText primary={`${contact.name} - ${contact.phone}`} />
+            <IconButton onClick={() => handleDeleteContact(contact.id)}>
+              <p className="text-red-600 text-sm">Excluir</p>
+            </IconButton>
           </ListItem>
         ))}
       </List>
+      </div>
     </Container>
   );
 };

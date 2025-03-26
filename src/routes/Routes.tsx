@@ -7,6 +7,7 @@ import Contacts from '../pages/Contacts';
 import SendMessage from '../pages/SendMessage';
 import ManageMessages from '../pages/ManageMessages';
 import PrivateRoute from '../components/PrivateRoute';
+import Dashboard from '../pages/Dashboard';
 
 const AppRoutes = () => {
   return (
@@ -16,6 +17,14 @@ const AppRoutes = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route
           path="/connections"
           element={
             <PrivateRoute>
@@ -23,16 +32,10 @@ const AppRoutes = () => {
             </PrivateRoute>
           }
         />
+        <Route path="/connections/:id/contacts" element={<Contacts />} />
+
         <Route
-          path="/contacts"
-          element={
-            <PrivateRoute>
-              <Contacts />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/send-message"
+          path="/connections/:id/send-message"
           element={
             <PrivateRoute>
               <SendMessage />

@@ -11,11 +11,11 @@ const Home: React.FC = () => {
       <nav className='flex-shrink-0  p-6 min-h-full flex flex-col items-start justify-center flex-1'>
         <ul>
           <li className='mb-8'>
-            <p className='text-white brightness-50 text-lg italic'>Sobre mim e porque deveria me contratar</p>
+            <p className='text-white brightness-50 text-lg italic'>Projeto no github</p>
             <a className='text-5xl font-bold text-white mt-2' href=""><h2 className='mt-2'>Acout</h2></a>
           </li>
           <li className='mb-8'>
-            <p className='text-white brightness-50 text-lg italic'>Contatos para me contratar</p>
+            <p className='text-white brightness-50 text-lg italic'>Meus contatos</p>
             <a className='text-5xl font-bold text-white' href=""><h2 className='mt-2'>Contact</h2></a>
           </li>
           <li className='mb-8'>

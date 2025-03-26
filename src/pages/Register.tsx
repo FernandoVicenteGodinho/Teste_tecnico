@@ -15,10 +15,7 @@ const Register: React.FC = () => {
     try {
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-          // Signed up
-          const user = userCredential.user;
           console.log('User:', userCredential);
-          // ...
         })
         .catch((error) => {
           if(error.message == 'Firebase: Error (auth/email-already-in-use).'){
@@ -37,7 +34,6 @@ const Register: React.FC = () => {
             position: 'top-end'
           });
         });
-      // Redirect to home or dashboard
     } catch (error) {
       console.error('Error logging in:', error);
     }

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, TextField, Button, Typography, List, ListItem, ListItemText, IconButton } from '@mui/material';
 import { firestore } from '../firebase/firebaseConfig';
 import { addDoc, collection, deleteDoc, doc, onSnapshot } from 'firebase/firestore';
-import { useParams } from 'react-router-dom'; // Importar o hook useParams
+import { useParams } from 'react-router-dom';
 import Header from '../components/Header';
 
 interface Contact {
@@ -14,7 +14,7 @@ interface Contact {
 const Contacts: React.FC = () => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [newContact, setNewContact] = useState({ name: '', phone: '' });
-  const { id: connectionId } = useParams<{ id: string }>(); // Extrair o connectionId da URL
+  const { id: connectionId } = useParams<{ id: string }>();
 
   useEffect(() => {
     if (!connectionId) {
@@ -22,7 +22,6 @@ const Contacts: React.FC = () => {
       return () => {};
     }
 
-    // Observar os contatos da conexão no Firestore
     const unsubscribe = onSnapshot(
       collection(doc(firestore, 'connections', connectionId), 'contacts'),
       (snapshot) => {
@@ -31,7 +30,7 @@ const Contacts: React.FC = () => {
       }
     );
 
-    return unsubscribe; // Cancelar a inscrição ao desmontar o componente
+    return unsubscribe;
   }, [connectionId]);
 
   const handleAddContact = async () => {

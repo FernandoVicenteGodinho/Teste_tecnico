@@ -10,7 +10,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return <div>Loading...</div>; // Você pode substituir por um spinner ou tela de carregamento
+    return <div>Loading...</div>;
   }
 
   return user ? <>{children}</> : <Navigate to="/login" />;

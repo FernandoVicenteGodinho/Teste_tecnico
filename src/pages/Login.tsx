@@ -1,15 +1,13 @@
-import React, { FormEvent, useState } from 'react';
 import { auth } from '../firebase/firebaseConfig';
+import { FormEvent, useState } from 'react';
 import { Button, Container, TextField, Typography } from '@mui/material';
 import {  signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const { setUser, user } = useAuth();
 
 
   const handleLogin = async (e: FormEvent) => {
@@ -17,15 +15,12 @@ const Login = () => {
     try {
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-          const user = userCredential.user;
-          // setUser(user);
+          console.log('User:', userCredential);
           navigate('/dashboard')
         })
         .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
+          console.error('Error logging in:', error);
         });
-      // Redirect to home or dashboard
     } catch (error) {
       console.error('Error logging in:', error);
     }

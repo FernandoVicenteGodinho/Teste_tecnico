@@ -5,11 +5,9 @@ admin.initializeApp();
 const firestore = admin.firestore();
 
 exports.sendScheduledMessages = functions.pubsub.schedule('every 1 minute').onRun(async (context) => {
-  const now = new Date().toISOString(); // Obter o horário atual no formato ISO
-
+  const now = new Date().toISOString();
   try {
-    // Buscar mensagens agendadas com status "scheduled" e horário de envio <= agora
-    const snapshot = await firestore
+        const snapshot = await firestore
       .collection('scheduledMessages')
       .where('status', '==', 'scheduled')
       .where('scheduleTime', '<=', now)

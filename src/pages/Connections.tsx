@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Container, TextField, Button, Typography, List, ListItem, ListItemText, IconButton } from '@mui/material';
+import { Container, TextField, Button, Typography, List, ListItem, ListItemText } from '@mui/material';
 import { firestore } from '../firebase/firebaseConfig';
 import { addDoc, collection, onSnapshot } from 'firebase/firestore';
-import { useNavigate } from 'react-router-dom'; // Importar o hook de navegação
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 
 interface Connection {
@@ -13,10 +13,9 @@ interface Connection {
 const Connections: React.FC = () => {
   const [connections, setConnections] = useState<Connection[]>([]);
   const [newConnectionName, setNewConnectionName] = useState('');
-  const navigate = useNavigate(); // Hook para navegação
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Observar todas as conexões no Firestore
     const unsubscribe = onSnapshot(collection(firestore, 'connections'), (snapshot) => {
       const connectionsData = snapshot.docs.map((doc) => ({
         id: doc.id,
@@ -25,7 +24,7 @@ const Connections: React.FC = () => {
       setConnections(connectionsData);
     });
 
-    return unsubscribe; // Cancelar a inscrição ao desmontar o componente
+    return unsubscribe;
   }, []);
 
   const handleAddConnection = async () => {
@@ -35,11 +34,10 @@ const Connections: React.FC = () => {
     }
 
     try {
-      // Adicionar nova conexão ao Firestore
       await addDoc(collection(firestore, 'connections'), {
         name: newConnectionName,
       });
-      setNewConnectionName(''); // Limpar o campo de entrada
+      setNewConnectionName('')
     } catch (error) {
       console.error('Erro ao adicionar conexão:', error);
     }
@@ -49,7 +47,6 @@ const Connections: React.FC = () => {
     navigate(`/connections/${connectionId}/contacts`);
   };
   const handleNavigateSendMenssage = (connectionId: string) => {
-    // Navegar para a página de contatos da conexão
     navigate(`/connections/${connectionId}/send-message`);
   };
 

@@ -3,16 +3,16 @@
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" },
-
   ],
-
     "compilerOptions": {
       "lib": ["es2020"],
       "target": "es2020",
       "module": "commonjs",
       "strict": true,
       "esModuleInterop": true,
-      "skipLibCheck": true
+      "skipLibCheck": true,
+      "noEmitOnError": false
+
     }
 
 

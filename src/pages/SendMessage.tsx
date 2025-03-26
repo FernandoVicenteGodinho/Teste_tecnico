@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, TextField, Button, Typography, List, ListItem, ListItemText, Checkbox } from '@mui/material';
 import { firestore } from '../firebase/firebaseConfig';
 import { collection, doc, getDocs, addDoc } from 'firebase/firestore';
-import { useParams } from 'react-router-dom'; // Importar o hook useParams
+import { useParams } from 'react-router-dom';
 import Header from '../components/Header';
 
 interface Contact {
@@ -16,7 +16,7 @@ const SendMessage: React.FC = () => {
   const [selectedContacts, setSelectedContacts] = useState<string[]>([]);
   const [message, setMessage] = useState('');
   const [scheduleTime, setScheduleTime] = useState('');
-  const { id: connectionId } = useParams<{ id: string }>(); // Extrair o connectionId da URL
+  const { id: connectionId } = useParams<{ id: string }>();
 
   useEffect(() => {
     if (!connectionId) {
@@ -26,7 +26,6 @@ const SendMessage: React.FC = () => {
 
     const fetchContacts = async () => {
       try {
-        // Buscar contatos da subcoleção 'contacts' dentro da conexão
         const snapshot = await getDocs(collection(doc(firestore, 'connections', connectionId), 'contacts'));
         const contactsData = snapshot.docs.map((doc) => ({
           id: doc.id,
@@ -54,12 +53,11 @@ const SendMessage: React.FC = () => {
     }
 
     try {
-      // Salvar a mensagem no Firestore
       await addDoc(collection(firestore, 'scheduledMessages'), {
         message,
         scheduleTime,
         contacts: selectedContacts,
-        status: 'scheduled', // Status inicial
+        status: 'scheduled',
       });
 
       alert('Mensagem agendada com sucesso!');

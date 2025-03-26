@@ -1,5 +1,3 @@
-// components/NotificationToast.js
-
 import Swal from 'sweetalert2';
 
 interface Notifications {

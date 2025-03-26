@@ -4,8 +4,8 @@ import WaveLine from '../components/Waveline';
 const Home: React.FC = () => {
   return (
     <div className="flex justify-center items-center min-h-screen min-w-screen bg-gradient-to-t from-[#292929] to-[#1a1a1a]">
-      <div className='flex-1 flex flex-col items-center justify-center min-h-full'>
-        <div className='text-white'>Teste</div>
+      <div className='flex-1 flex flex-col items-center justify-center min-h-full p-20'>
+        <div className='text-white'>Me chamo Fernando e sou desenvolvedor FullStack a 5 anos e agradeço a oportunidade de poder fazer o teste tecnico.</div>
       </div>
       <nav className='flex-shrink-0  p-6 min-h-full flex flex-col items-start justify-center flex-1'>
         <ul>
